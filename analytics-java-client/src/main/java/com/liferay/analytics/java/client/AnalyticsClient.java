@@ -27,8 +27,10 @@ import javax.ws.rs.core.Response;
  */
 public class AnalyticsClient {
 
-	public Response addAnalytics(AnalyticsEventsMessage analyticsEventMessage) {
-		WebTarget webTarget = _client.target(_REST_URI);
+	public Response sendAnalytics(
+		AnalyticsEventsMessage analyticsEventMessage) {
+
+		WebTarget webTarget = _client.target(_ANALYTICS_GATEWAY_URL);
 
 		Invocation.Builder request = webTarget.request(
 			MediaType.APPLICATION_JSON);
@@ -37,7 +39,7 @@ public class AnalyticsClient {
 			Entity.entity(analyticsEventMessage, MediaType.APPLICATION_JSON));
 	}
 
-	private static final String _REST_URI =
+	private static final String _ANALYTICS_GATEWAY_URL =
 		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events";
 
 	private final Client _client = ClientBuilder.newClient();
