@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.analytics.rest.client;
+package com.liferay.analytics.java.client;
 
 import java.util.ArrayList;
 import java.util.Date;

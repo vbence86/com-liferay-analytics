@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.analytics.rest.client;
+package com.liferay.analytics.java.client;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
