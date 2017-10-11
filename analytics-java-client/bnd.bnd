@@ -1,5 +1,5 @@
-Bundle-Name: Liferay Analytics Rest Client
-Bundle-SymbolicName: com.liferay.analytics.rest.client
+Bundle-Name: Liferay Analytics Java Client
+Bundle-SymbolicName: com.liferay.analytics.java.client
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Analytics
