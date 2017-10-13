@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Eduardo Garcia
@@ -152,8 +153,12 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _event;
 		}
 
-		public Properties getProperties() {
+		public Map<String, String> getProperties() {
 			return _properties;
+		}
+
+		public List<Referrer> getReferrers() {
+			return _referrers;
 		}
 
 		public Date getTimestamp() {
@@ -168,8 +173,12 @@ public class AnalyticsEventsMessage implements Serializable {
 			_event = event;
 		}
 
-		public void setProperties(Properties properties) {
+		public void setProperties(Map<String, String> properties) {
 			_properties = properties;
+		}
+
+		public void setReferrers(List<Referrer> referrers) {
+			_referrers = referrers;
 		}
 
 		public void setTimestamp(Date timestamp) {
@@ -178,55 +187,14 @@ public class AnalyticsEventsMessage implements Serializable {
 
 		private String _additionalInfo;
 		private String _event;
-		private Properties _properties;
+		private Map<String, String> _properties = Collections.emptyMap();
+		private List<Referrer> _referrers = Collections.emptyList();
 
 		@JsonFormat(
 			pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
 			shape = JsonFormat.Shape.STRING, timezone = "UTC"
 		)
 		private Date _timestamp;
-
-	}
-
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class Properties {
-
-		public String getElementId() {
-			return _elementId;
-		}
-
-		public String getEntityId() {
-			return _entityId;
-		}
-
-		public String getEntityType() {
-			return _entityType;
-		}
-
-		public List<Referrer> getReferrers() {
-			return _referrers;
-		}
-
-		public void setElementId(String elementId) {
-			_elementId = elementId;
-		}
-
-		public void setEntityId(String entityId) {
-			_entityId = entityId;
-		}
-
-		public void setEntityType(String entityType) {
-			_entityType = entityType;
-		}
-
-		public void setReferrers(List<Referrer> referrers) {
-			_referrers = referrers;
-		}
-
-		private String _elementId;
-		private String _entityId;
-		private String _entityType;
-		private List<Referrer> _referrers = Collections.emptyList();
 
 	}
 

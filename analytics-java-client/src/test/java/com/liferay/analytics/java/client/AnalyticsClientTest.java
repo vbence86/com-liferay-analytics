@@ -16,7 +16,9 @@ package com.liferay.analytics.java.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
@@ -53,10 +55,9 @@ public class AnalyticsClientTest {
 		event.setEvent("view");
 		event.setTimestamp(new Date());
 
-		AnalyticsEventsMessage.Properties properties =
-			new AnalyticsEventsMessage.Properties();
+		Map<String, String> properties = new HashMap<>();
 
-		properties.setElementId("banner1");
+		properties.put("elementId", "banner1");
 
 		event.setProperties(properties);
 
