@@ -20,8 +20,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,10 @@ import java.util.Map;
 	use = JsonTypeInfo.Id.NAME, visible = true
 )
 public class AnalyticsEventsMessage implements Serializable {
+
+	public static AnalyticsEventsMessage.Builder builder() {
+		return new AnalyticsEventsMessage.Builder();
+	}
 
 	public long getAnonymousUserId() {
 		return _anonymousUserId;
@@ -68,40 +74,71 @@ public class AnalyticsEventsMessage implements Serializable {
 		return _userAgent;
 	}
 
-	public void setAnonymousUserId(long anonymousUserId) {
-		_anonymousUserId = anonymousUserId;
-	}
+	public static class Builder {
 
-	public void setApplicationId(String applicationId) {
-		_applicationId = applicationId;
-	}
+		public Builder anonymousUserId(long anonymousUserId) {
+			_analyticsEventsMessage._anonymousUserId = anonymousUserId;
 
-	public void setChannel(String channel) {
-		_channel = channel;
-	}
+			return this;
+		}
 
-	public void setClientIP(String clientIP) {
-		_clientIP = clientIP;
-	}
+		public Builder applicationId(String applicationId) {
+			_analyticsEventsMessage._applicationId = applicationId;
 
-	public void setContext(Context context) {
-		_context = context;
-	}
+			return this;
+		}
 
-	public void setEvents(List<Event> events) {
-		_events = events;
-	}
+		public AnalyticsEventsMessage build() {
+			return _analyticsEventsMessage;
+		}
 
-	public void setMessageFormat(String messageFormat) {
-		_messageFormat = messageFormat;
-	}
+		public Builder channel(String channel) {
+			_analyticsEventsMessage._channel = channel;
 
-	public void setUserAgent(String userAgent) {
-		_userAgent = userAgent;
+			return this;
+		}
+
+		public Builder clientIP(String clientIP) {
+			_analyticsEventsMessage._clientIP = clientIP;
+
+			return this;
+		}
+
+		public Builder context(Context context) {
+			_analyticsEventsMessage._context = context;
+
+			return this;
+		}
+
+		public Builder event(Event event) {
+			_analyticsEventsMessage._events.add(event);
+
+			return this;
+		}
+
+		public Builder messageFormat(String messageFormat) {
+			_analyticsEventsMessage._messageFormat = messageFormat;
+
+			return this;
+		}
+
+		public Builder userAgent(String userAgent) {
+			_analyticsEventsMessage._userAgent = userAgent;
+
+			return this;
+		}
+
+		private final AnalyticsEventsMessage _analyticsEventsMessage =
+			new AnalyticsEventsMessage();
+
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Context {
+
+		public static Context.Builder builder() {
+			return new Context.Builder();
+		}
 
 		public long getInstanceId() {
 			return _instanceId;
@@ -119,20 +156,42 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _userId;
 		}
 
-		public void setInstanceId(long instanceId) {
-			_instanceId = instanceId;
+		public static class Builder {
+
+			public AnalyticsEventsMessage.Context build() {
+				return _context;
+			}
+
+			public Context.Builder instanceId(long instanceId) {
+				_context._instanceId = instanceId;
+
+				return this;
+			}
+
+			public Context.Builder languageId(String languageId) {
+				_context._languageId = languageId;
+
+				return this;
+			}
+
+			public Context.Builder url(String url) {
+				_context._url = url;
+
+				return this;
+			}
+
+			public Context.Builder userId(long userId) {
+				_context._userId = userId;
+
+				return this;
+			}
+
+			private AnalyticsEventsMessage.Context _context =
+				new AnalyticsEventsMessage.Context();
+
 		}
 
-		public void setLanguageId(String languageId) {
-			_languageId = languageId;
-		}
-
-		public void setUrl(String url) {
-			_url = url;
-		}
-
-		public void setUserId(long userId) {
-			_userId = userId;
+		private Context() {
 		}
 
 		private long _instanceId;
@@ -145,6 +204,10 @@ public class AnalyticsEventsMessage implements Serializable {
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Event {
 
+		public static Event.Builder builder() {
+			return new Event.Builder();
+		}
+
 		public String getAdditionalInfo() {
 			return _additionalInfo;
 		}
@@ -154,41 +217,65 @@ public class AnalyticsEventsMessage implements Serializable {
 		}
 
 		public Map<String, String> getProperties() {
-			return _properties;
+			return Collections.unmodifiableMap(_properties);
 		}
 
 		public List<Referrer> getReferrers() {
-			return _referrers;
+			return Collections.unmodifiableList(_referrers);
 		}
 
 		public Date getTimestamp() {
 			return _timestamp;
 		}
 
-		public void setAdditionalInfo(String additionalInfo) {
-			_additionalInfo = additionalInfo;
+		public static class Builder {
+
+			public Event.Builder additionalInfo(String additionalInfo) {
+				_event._additionalInfo = additionalInfo;
+
+				return this;
+			}
+
+			public AnalyticsEventsMessage.Event build() {
+				return _event;
+			}
+
+			public Event.Builder event(String event) {
+				_event._event = event;
+
+				return this;
+			}
+
+			public Event.Builder property(String key, String value) {
+				_event._properties.put(key, value);
+
+				return this;
+			}
+
+			public Event.Builder referrer(Referrer referrer) {
+				_event._referrers.add(referrer);
+
+				return this;
+			}
+
+			public Event.Builder timestamp(Date timestamp) {
+				_event._timestamp = timestamp;
+
+				return this;
+			}
+
+			private AnalyticsEventsMessage.Event _event =
+				new AnalyticsEventsMessage.Event();
+
 		}
 
-		public void setEvent(String event) {
-			_event = event;
-		}
-
-		public void setProperties(Map<String, String> properties) {
-			_properties = properties;
-		}
-
-		public void setReferrers(List<Referrer> referrers) {
-			_referrers = referrers;
-		}
-
-		public void setTimestamp(Date timestamp) {
-			_timestamp = timestamp;
+		private Event() {
 		}
 
 		private String _additionalInfo;
 		private String _event;
-		private Map<String, String> _properties = Collections.emptyMap();
-		private List<Referrer> _referrers = Collections.emptyList();
+		private final Map<String, String> _properties = new HashMap<>();
+		private List<Referrer> _referrers = new ArrayList<>();
 
 		@JsonFormat(
 			pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
@@ -201,6 +288,10 @@ public class AnalyticsEventsMessage implements Serializable {
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Referrer {
 
+		public static Referrer.Builder builder() {
+			return new Referrer.Builder();
+		}
+
 		public List<String> getReferrerEntityIds() {
 			return _referrerEntityIds;
 		}
@@ -209,12 +300,34 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _referrerEntityType;
 		}
 
-		public void setReferrerEntityIds(List<String> referrerEntityIds) {
-			_referrerEntityIds = referrerEntityIds;
+		public static class Builder {
+
+			public AnalyticsEventsMessage.Referrer build() {
+				return _referrer;
+			}
+
+			public Referrer.Builder referrerEntityIds(
+				List<String> referrerEntityIds) {
+
+				_referrer._referrerEntityIds = referrerEntityIds;
+
+				return this;
+			}
+
+			public Referrer.Builder referrerEntityType(
+				String referrerEntityType) {
+
+				_referrer._referrerEntityType = referrerEntityType;
+
+				return this;
+			}
+
+			private final AnalyticsEventsMessage.Referrer _referrer =
+				new AnalyticsEventsMessage.Referrer();
+
 		}
 
-		public void setReferrerEntityType(String referrerEntityType) {
-			_referrerEntityType = referrerEntityType;
+		private Referrer() {
 		}
 
 		private List<String> _referrerEntityIds = Collections.emptyList();
@@ -222,12 +335,15 @@ public class AnalyticsEventsMessage implements Serializable {
 
 	}
 
+	private AnalyticsEventsMessage() {
+	}
+
 	private long _anonymousUserId;
 	private String _applicationId;
 	private String _channel;
 	private String _clientIP;
 	private Context _context;
-	private List<Event> _events = Collections.emptyList();
+	private final List<Event> _events = new ArrayList<>();
 	private String _messageFormat;
 	private String _userAgent;
 
