@@ -39,8 +39,9 @@ public class AnalyticsClient {
 			Entity.entity(analyticsEventMessage, MediaType.APPLICATION_JSON));
 	}
 
-	private static final String _ANALYTICS_GATEWAY_URL =
-		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events";
+	private static final String _ANALYTICS_GATEWAY_URL = System.getProperty(
+		"analytics.gateway.url",
+		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events");
 
 	private final Client _client = ClientBuilder.newClient();
 
