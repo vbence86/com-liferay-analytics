@@ -42,6 +42,10 @@ public class AnalyticsEventsMessage implements Serializable {
 		return new AnalyticsEventsMessage.Builder();
 	}
 
+	public String getAnalyticsKey() {
+		return _analyticsKey;
+	}
+
 	public long getAnonymousUserId() {
 		return _anonymousUserId;
 	}
@@ -75,6 +79,12 @@ public class AnalyticsEventsMessage implements Serializable {
 	}
 
 	public static class Builder {
+
+		public Builder analyticsKey(String analyticsKey) {
+			_analyticsEventsMessage._analyticsKey = analyticsKey;
+
+			return this;
+		}
 
 		public Builder anonymousUserId(long anonymousUserId) {
 			_analyticsEventsMessage._anonymousUserId = anonymousUserId;
@@ -338,6 +348,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	private AnalyticsEventsMessage() {
 	}
 
+	private String _analyticsKey;
 	private long _anonymousUserId;
 	private String _applicationId;
 	private String _channel;
