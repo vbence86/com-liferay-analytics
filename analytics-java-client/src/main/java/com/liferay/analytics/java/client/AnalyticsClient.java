@@ -32,10 +32,10 @@ public class AnalyticsClient {
 
 		WebTarget webTarget = _client.target(_ANALYTICS_GATEWAY_URL);
 
-		Invocation.Builder request = webTarget.request(
+		Invocation.Builder builder = webTarget.builder(
 			MediaType.APPLICATION_JSON);
 
-		return request.post(
+		return builder.post(
 			Entity.entity(analyticsEventsMessage, MediaType.APPLICATION_JSON));
 	}
 
