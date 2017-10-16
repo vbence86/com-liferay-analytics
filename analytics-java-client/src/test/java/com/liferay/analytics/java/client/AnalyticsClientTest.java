@@ -33,6 +33,7 @@ public class AnalyticsClientTest {
 		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
 			AnalyticsEventsMessage.builder();
 
+		analyticsEventsMessageBuilder.analyticsKey("WXYZ");
 		analyticsEventsMessageBuilder.applicationId("AT");
 		analyticsEventsMessageBuilder.channel("web");
 		analyticsEventsMessageBuilder.messageFormat("AT");

@@ -114,21 +114,27 @@ public class AnalyticsEventsMessageBuilderTest {
 
 		// Message
 
+		String expectedAnalyticsKey = "WZYZ";
 		long expectedAnonymousUserId = 123;
 		String expectedApplicationId = "AT";
 		String expectedClientIP = "127.0.0.1";
 		String expectedMessageFormat = "MessageFormat";
+		String expectedProtocolVersion = "1.0.0";
 		String expectedUserAgent = "UserAgent";
 
 		AnalyticsEventsMessage actualAnalyticsEventsMessage =
 			createAnalyticsEventsMessage(
-				expectedAnonymousUserId, expectedApplicationId,
-				expectedClientIP, expectedContext, expectedEvents,
-				expectedMessageFormat, expectedUserAgent);
+				expectedAnalyticsKey, expectedAnonymousUserId,
+				expectedApplicationId, expectedClientIP, expectedContext,
+				expectedEvents, expectedMessageFormat, expectedProtocolVersion,
+				expectedUserAgent);
 
 		Assert.assertEquals(
 			expectedAnonymousUserId,
 			actualAnalyticsEventsMessage.getAnonymousUserId());
+		Assert.assertEquals(
+			expectedAnalyticsKey,
+			actualAnalyticsEventsMessage.getAnalyticsKey());
 		Assert.assertEquals(
 			expectedApplicationId,
 			actualAnalyticsEventsMessage.getApplicationId());
@@ -159,6 +165,9 @@ public class AnalyticsEventsMessageBuilderTest {
 		Assert.assertEquals(
 			expectedMessageFormat,
 			actualAnalyticsEventsMessage.getMessageFormat());
+		Assert.assertEquals(
+			expectedProtocolVersion,
+			actualAnalyticsEventsMessage.getProtocolVersion());
 		Assert.assertEquals(
 			expectedUserAgent, actualAnalyticsEventsMessage.getUserAgent());
 	}
@@ -230,14 +239,15 @@ public class AnalyticsEventsMessageBuilderTest {
 	}
 
 	protected AnalyticsEventsMessage createAnalyticsEventsMessage(
-		long anonymousUserId, String applicationId, String clientIP,
-		AnalyticsEventsMessage.Context context,
+		String analyticsKey, long anonymousUserId, String applicationId,
+		String clientIP, AnalyticsEventsMessage.Context context,
 		List<AnalyticsEventsMessage.Event> events, String messageFormat,
-		String userAgent) {
+		String protocolVersion, String userAgent) {
 
 		AnalyticsEventsMessage.Builder messageBuilder =
 			AnalyticsEventsMessage.builder();
 
+		messageBuilder.analyticsKey(analyticsKey);
 		messageBuilder.anonymousUserId(anonymousUserId);
 		messageBuilder.applicationId(applicationId);
 		messageBuilder.clientIP(clientIP);
@@ -248,6 +258,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		}
 
 		messageBuilder.messageFormat(messageFormat);
+		messageBuilder.protocolVersion(protocolVersion);
 		messageBuilder.userAgent(userAgent);
 
 		return messageBuilder.build();
