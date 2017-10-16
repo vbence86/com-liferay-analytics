@@ -74,6 +74,10 @@ public class AnalyticsEventsMessage implements Serializable {
 		return _messageFormat;
 	}
 
+	public String getProtocolVersion() {
+		return _protocolVersion;
+	}
+
 	public String getUserAgent() {
 		return _userAgent;
 	}
@@ -128,6 +132,12 @@ public class AnalyticsEventsMessage implements Serializable {
 
 		public Builder messageFormat(String messageFormat) {
 			_analyticsEventsMessage._messageFormat = messageFormat;
+
+			return this;
+		}
+
+		public Builder protocolVersion(String protocolVersion) {
+			_analyticsEventsMessage._protocolVersion = protocolVersion;
 
 			return this;
 		}
@@ -356,6 +366,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	private Context _context;
 	private final List<Event> _events = new ArrayList<>();
 	private String _messageFormat;
+	private String _protocolVersion;
 	private String _userAgent;
 
 }
