@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 public class AnalyticsClient {
 
 	public Response sendAnalytics(
-		AnalyticsEventsMessage analyticsEventMessage) {
+		AnalyticsEventsMessage analyticsEventsMessage) {
 
 		WebTarget webTarget = _client.target(_ANALYTICS_GATEWAY_URL);
 
@@ -36,7 +36,7 @@ public class AnalyticsClient {
 			MediaType.APPLICATION_JSON);
 
 		return request.post(
-			Entity.entity(analyticsEventMessage, MediaType.APPLICATION_JSON));
+			Entity.entity(analyticsEventsMessage, MediaType.APPLICATION_JSON));
 	}
 
 	private static final String _ANALYTICS_GATEWAY_URL = System.getProperty(
