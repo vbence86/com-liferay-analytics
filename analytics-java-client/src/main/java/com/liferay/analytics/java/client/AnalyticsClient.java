@@ -17,7 +17,6 @@ package com.liferay.analytics.java.client;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,10 +31,7 @@ public class AnalyticsClient {
 
 		WebTarget webTarget = _client.target(_ANALYTICS_GATEWAY_URL);
 
-		Invocation.Builder builder = webTarget.builder(
-			MediaType.APPLICATION_JSON);
-
-		return builder.post(
+		return webTarget.request(MediaType.APPLICATION_JSON).post(
 			Entity.entity(analyticsEventsMessage, MediaType.APPLICATION_JSON));
 	}
 
