@@ -15,6 +15,7 @@
 package com.liferay.analytics.java.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -154,8 +155,13 @@ public final class AnalyticsEventsMessage implements Serializable {
 		private Event() {
 		}
 
+		@JsonProperty("applicationId")
 		private String _applicationId;
+
+		@JsonProperty("eventId")
 		private String _eventId;
+
+		@JsonProperty("properties")
 		private Map<String, String> _properties = new HashMap<>();
 
 	}
@@ -163,10 +169,19 @@ public final class AnalyticsEventsMessage implements Serializable {
 	private AnalyticsEventsMessage() {
 	}
 
+	@JsonProperty("analyticsKey")
 	private String _analyticsKey;
+
+	@JsonProperty("context")
 	private Map<String, String> _context = new HashMap<>();
+
+	@JsonProperty("events")
 	private final List<Event> _events = new ArrayList<>();
+
+	@JsonProperty("protocolVersion")
 	private String _protocolVersion;
+
+	@JsonProperty("userId")
 	private long _userId;
 
 }
