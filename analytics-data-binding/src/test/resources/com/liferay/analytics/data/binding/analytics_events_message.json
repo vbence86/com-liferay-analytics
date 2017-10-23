@@ -1,0 +1,37 @@
+{
+	"analyticsKey": "AnalyticsKey",
+	"anonymousUserId": 0,
+	"applicationId": "ApplicationId",
+	"channel": "Channel",
+	"clientIP": "ClientIP",
+	"context": {
+		"instanceId": 0,
+		"languageId": "LanguageId",
+		"url": "Url",
+		"userId": 0
+	},
+	"events": [
+		{
+			"additionalInfo": "AdditionalInfo",
+			"event": "View",
+			"properties": {
+				"k1": "v1",
+				"k2": "v2"
+			},
+			"referrers": [
+				{
+					"referrerEntityIds": [
+						"1",
+						"2",
+						"3"
+					],
+					"referrerEntityType": "EntityType"
+				}
+			],
+			"timestamp": "2018-11-20T12:30:15.000Z"
+		}
+	],
+	"messageFormat": "MessageFormat",
+	"protocolVersion": "1.0",
+	"userAgent": "UserAgent"
+}
