@@ -12,7 +12,10 @@
  * details.
  */
 
-package com.liferay.analytics.java.client;
+package com.liferay.analytics.java.client.test;
+
+import com.liferay.analytics.java.client.AnalyticsClient;
+import com.liferay.analytics.java.client.AnalyticsEventsMessage;
 
 import java.util.Date;
 
