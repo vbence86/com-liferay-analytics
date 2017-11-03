@@ -36,8 +36,10 @@ import java.util.Map;
 )
 public class AnalyticsEventsMessage implements Serializable {
 
-	public static AnalyticsEventsMessage.Builder builder() {
-		return new AnalyticsEventsMessage.Builder();
+	public static AnalyticsEventsMessage.Builder builder(
+		String analyticsKey, long userId) {
+
+		return new AnalyticsEventsMessage.Builder(analyticsKey, userId);
 	}
 
 	public String getAnalyticsKey() {
@@ -61,12 +63,6 @@ public class AnalyticsEventsMessage implements Serializable {
 	}
 
 	public static class Builder {
-
-		public Builder analyticsKey(String analyticsKey) {
-			_analyticsEventsMessage._analyticsKey = analyticsKey;
-
-			return this;
-		}
 
 		public AnalyticsEventsMessage build() {
 			return _analyticsEventsMessage;
@@ -96,10 +92,9 @@ public class AnalyticsEventsMessage implements Serializable {
 			return this;
 		}
 
-		public Builder userId(long userId) {
+		protected Builder(String analyticsKey, long userId) {
+			_analyticsEventsMessage._analyticsKey = analyticsKey;
 			_analyticsEventsMessage._userId = userId;
-
-			return this;
 		}
 
 		private final AnalyticsEventsMessage _analyticsEventsMessage =
@@ -110,8 +105,10 @@ public class AnalyticsEventsMessage implements Serializable {
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Event {
 
-		public static Event.Builder builder() {
-			return new Event.Builder();
+		public static Event.Builder builder(
+			String applicationId, String eventId) {
+
+			return new Event.Builder(applicationId, eventId);
 		}
 
 		public String getApplicationId() {
@@ -128,20 +125,8 @@ public class AnalyticsEventsMessage implements Serializable {
 
 		public static class Builder {
 
-			public Event.Builder applicationId(String applicationId) {
-				_event._applicationId = applicationId;
-
-				return this;
-			}
-
 			public AnalyticsEventsMessage.Event build() {
 				return _event;
-			}
-
-			public Event.Builder eventId(String eventId) {
-				_event._eventId = eventId;
-
-				return this;
 			}
 
 			public Event.Builder properties(Map<String, String> properties) {
@@ -154,6 +139,11 @@ public class AnalyticsEventsMessage implements Serializable {
 				_event._properties.put(key, value);
 
 				return this;
+			}
+
+			protected Builder(String applicationId, String eventId) {
+				_event._applicationId = applicationId;
+				_event._eventId = eventId;
 			}
 
 			private final AnalyticsEventsMessage.Event _event =
