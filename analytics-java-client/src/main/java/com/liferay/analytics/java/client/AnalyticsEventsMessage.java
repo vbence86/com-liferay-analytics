@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * @author Eduardo Garcia
- * @see com.liferay.lcs.messaging.AnalyticsEventsMessage
+ * @author Marcellus Tavares
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class AnalyticsEventsMessage implements Serializable {
