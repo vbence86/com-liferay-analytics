@@ -15,7 +15,6 @@
 package com.liferay.analytics.java.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
@@ -30,10 +29,6 @@ import java.util.Map;
  * @see com.liferay.lcs.messaging.AnalyticsEventsMessage
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-	include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "messageFormat",
-	use = JsonTypeInfo.Id.NAME, visible = true
-)
 public final class AnalyticsEventsMessage implements Serializable {
 
 	public static AnalyticsEventsMessage.Builder builder(
