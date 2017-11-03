@@ -34,7 +34,7 @@ import java.util.Map;
 	include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "messageFormat",
 	use = JsonTypeInfo.Id.NAME, visible = true
 )
-public class AnalyticsEventsMessage implements Serializable {
+public final class AnalyticsEventsMessage implements Serializable {
 
 	public static AnalyticsEventsMessage.Builder builder(
 		String analyticsKey, long userId) {
@@ -62,7 +62,7 @@ public class AnalyticsEventsMessage implements Serializable {
 		return _userId;
 	}
 
-	public static class Builder {
+	public static final class Builder {
 
 		public AnalyticsEventsMessage build() {
 			return _analyticsEventsMessage;
@@ -103,7 +103,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class Event {
+	public static final class Event {
 
 		public static Event.Builder builder(
 			String applicationId, String eventId) {
@@ -123,7 +123,7 @@ public class AnalyticsEventsMessage implements Serializable {
 			return Collections.unmodifiableMap(_properties);
 		}
 
-		public static class Builder {
+		public static final class Builder {
 
 			public AnalyticsEventsMessage.Event build() {
 				return _event;
