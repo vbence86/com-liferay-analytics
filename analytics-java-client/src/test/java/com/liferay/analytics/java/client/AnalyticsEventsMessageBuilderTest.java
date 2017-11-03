@@ -128,10 +128,8 @@ public class AnalyticsEventsMessageBuilderTest {
 		List<AnalyticsEventsMessage.Event> events, String protocolVersion) {
 
 		AnalyticsEventsMessage.Builder messageBuilder =
-			AnalyticsEventsMessage.builder();
+			AnalyticsEventsMessage.builder(analyticsKey, userId);
 
-		messageBuilder.analyticsKey(analyticsKey);
-		messageBuilder.userId(userId);
 		messageBuilder.context(context);
 
 		for (AnalyticsEventsMessage.Event event : events) {
@@ -160,10 +158,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		String applicationId, String eventId, Map<String, String> properties) {
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder();
-
-		eventBuilder.applicationId(applicationId);
-		eventBuilder.eventId(eventId);
+			AnalyticsEventsMessage.Event.builder(applicationId, eventId);
 
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
 			eventBuilder.property(entry.getKey(), entry.getValue());

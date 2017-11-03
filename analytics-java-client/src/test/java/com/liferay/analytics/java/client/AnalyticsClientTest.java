@@ -34,24 +34,19 @@ public class AnalyticsClientTest {
 	@Test
 	public void testAnalyticsEventCreation() {
 		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
-			AnalyticsEventsMessage.builder();
-
-		analyticsEventsMessageBuilder.analyticsKey("WXYZ");
+			AnalyticsEventsMessage.builder("WXYZ", 1234);
 
 		Map<String, String> context = new HashMap<>();
 
 		context.put("instanceId", "1234");
 		context.put("languageId", "en_US");
 		context.put("url", "http://www.liferay.com");
-		context.put("userId", "1234");
 
 		analyticsEventsMessageBuilder.context(context);
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder();
+			AnalyticsEventsMessage.Event.builder("AT", "view");
 
-		eventBuilder.applicationId("AT");
-		eventBuilder.eventId("view");
 		eventBuilder.property("elementId", "banner1");
 
 		analyticsEventsMessageBuilder.event(eventBuilder.build());
