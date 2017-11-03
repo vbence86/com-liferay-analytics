@@ -112,6 +112,13 @@ public class AnalyticsEventsMessageBuilderTest {
 			actualAnalyticsEventsMessage.getProtocolVersion());
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void testCreateMessageWithoutEvent() {
+		createAnalyticsEventsMessage(
+			randomString(), randomLong(), new HashMap<>(), new ArrayList<>(),
+			randomString());
+	}
+
 	protected void assertEvent(
 		String expectedApplicationId, String expectedEventId,
 		Map<String, String> expectedProperties,
