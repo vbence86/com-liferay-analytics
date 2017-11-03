@@ -65,6 +65,11 @@ public final class AnalyticsEventsMessage implements Serializable {
 	public static final class Builder {
 
 		public AnalyticsEventsMessage build() {
+			if (_analyticsEventsMessage._events.size() == 0) {
+				throw new IllegalStateException(
+					"The message should contain at least one event");
+			}
+
 			return _analyticsEventsMessage;
 		}
 
