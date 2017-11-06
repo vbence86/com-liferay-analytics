@@ -45,7 +45,8 @@ public class AnalyticsClientTest {
 		analyticsEventsMessageBuilder.context(context);
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder("AT", "view");
+			AnalyticsEventsMessage.Event.builder(
+				"AT", "view", "http://www.google.com");
 
 		eventBuilder.property("elementId", "banner1");
 

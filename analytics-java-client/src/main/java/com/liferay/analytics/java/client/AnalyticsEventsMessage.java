@@ -106,9 +106,9 @@ public final class AnalyticsEventsMessage implements Serializable {
 	public static final class Event {
 
 		public static Event.Builder builder(
-			String applicationId, String eventId) {
+			String applicationId, String eventId, String referral) {
 
-			return new Event.Builder(applicationId, eventId);
+			return new Event.Builder(applicationId, eventId, referral);
 		}
 
 		public String getApplicationId() {
@@ -121,6 +121,10 @@ public final class AnalyticsEventsMessage implements Serializable {
 
 		public Map<String, String> getProperties() {
 			return Collections.unmodifiableMap(_properties);
+		}
+
+		public String getReferral() {
+			return _referral;
 		}
 
 		public static final class Builder {
@@ -141,9 +145,12 @@ public final class AnalyticsEventsMessage implements Serializable {
 				return this;
 			}
 
-			protected Builder(String applicationId, String eventId) {
+			protected Builder(
+				String applicationId, String eventId, String referral) {
+
 				_event._applicationId = applicationId;
 				_event._eventId = eventId;
+				_event._referral = referral;
 			}
 
 			private final AnalyticsEventsMessage.Event _event =
@@ -157,6 +164,7 @@ public final class AnalyticsEventsMessage implements Serializable {
 		private String _applicationId;
 		private String _eventId;
 		private Map<String, String> _properties = new HashMap<>();
+		private String _referral;
 
 	}
 

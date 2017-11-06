@@ -42,12 +42,15 @@ public class AnalyticsEventsMessageBuilderTest {
 		expectedProperties.put(randomString(), randomString());
 		expectedProperties.put(randomString(), randomString());
 
+		String expectedReferral = randomString();
+
 		AnalyticsEventsMessage.Event actualEvent = createEvent(
-			expectedApplicationId, expectedEventId, expectedProperties);
+			expectedApplicationId, expectedEventId, expectedReferral,
+			expectedProperties);
 
 		assertEvent(
-			expectedApplicationId, expectedEventId, expectedProperties,
-			actualEvent);
+			expectedApplicationId, expectedEventId, expectedReferral,
+			expectedProperties, actualEvent);
 	}
 
 	@Test
@@ -69,9 +72,12 @@ public class AnalyticsEventsMessageBuilderTest {
 
 		expectedProperties.put(randomString(), randomString());
 
+		String expectedReferral = randomString();
+
 		expectedEvents.add(
 			createEvent(
-				expectedApplicationId, expectedEventId, expectedProperties));
+				expectedApplicationId, expectedEventId, expectedReferral,
+				expectedProperties));
 
 		// Message
 
@@ -104,7 +110,8 @@ public class AnalyticsEventsMessageBuilderTest {
 		for (AnalyticsEventsMessage.Event expectedEvent : expectedEvents) {
 			assertEvent(
 				expectedEvent.getApplicationId(), expectedEvent.getEventId(),
-				expectedEvent.getProperties(), actualEvents.get(i++));
+				expectedEvent.getReferral(), expectedEvent.getProperties(),
+				actualEvents.get(i++));
 		}
 
 		Assert.assertEquals(
@@ -121,13 +128,14 @@ public class AnalyticsEventsMessageBuilderTest {
 
 	protected void assertEvent(
 		String expectedApplicationId, String expectedEventId,
-		Map<String, String> expectedProperties,
+		String expectedReferral, Map<String, String> expectedProperties,
 		AnalyticsEventsMessage.Event actualEvent) {
 
 		Assert.assertEquals(
 			expectedApplicationId, actualEvent.getApplicationId());
 		Assert.assertEquals(expectedEventId, actualEvent.getEventId());
 		Assert.assertEquals(expectedProperties, actualEvent.getProperties());
+		Assert.assertEquals(expectedReferral, actualEvent.getReferral());
 	}
 
 	protected AnalyticsEventsMessage createAnalyticsEventsMessage(
@@ -162,10 +170,12 @@ public class AnalyticsEventsMessageBuilderTest {
 	}
 
 	protected AnalyticsEventsMessage.Event createEvent(
-		String applicationId, String eventId, Map<String, String> properties) {
+		String applicationId, String eventId, String referral,
+		Map<String, String> properties) {
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder(applicationId, eventId);
+			AnalyticsEventsMessage.Event.builder(
+				applicationId, eventId, referral);
 
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
 			eventBuilder.property(entry.getKey(), entry.getValue());
