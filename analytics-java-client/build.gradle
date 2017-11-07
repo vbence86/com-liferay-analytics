@@ -11,6 +11,7 @@ dependencies {
 	provided group: "org.glassfish.jersey.core", name: "jersey-client", version: "2.25.1"
 	provided group: "org.glassfish.jersey.ext", name: "jersey-spring3", version: "2.25.1"
 	provided group: "org.glassfish.jersey.media", name: "jersey-media-json-jackson", version: "2.25.1"
+	provided project(":apps:analytics:analytics-api")
 
 	testCompile group: "junit", name: "junit", version: "4.12"
 	testCompile group: "org.apache.commons", name: "commons-lang3", version: "3.6"

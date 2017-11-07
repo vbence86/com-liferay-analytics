@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author Jeyvison Nascimento
  * @author Marcellus Tavares
  */
-public class AnalyticsEventsMessageBuilderTest {
+public class AnalyticsEventsMessageImplBuilderTest {
 
 	@Test
 	public void testCreateEvent() {
@@ -41,7 +41,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		expectedProperties.put(randomString(), randomString());
 		expectedProperties.put(randomString(), randomString());
 
-		AnalyticsEventsMessage.Event actualEvent = createEvent(
+		AnalyticsEventsMessageImpl.Event actualEvent = createEvent(
 			expectedApplicationId, expectedEventId, expectedProperties);
 
 		assertEvent(
@@ -60,7 +60,8 @@ public class AnalyticsEventsMessageBuilderTest {
 
 		// Events
 
-		List<AnalyticsEventsMessage.Event> expectedEvents = new ArrayList<>();
+		List<AnalyticsEventsMessageImpl.Event> expectedEvents =
+			new ArrayList<>();
 
 		String expectedApplicationId = randomString();
 		String expectedEventId = randomString();
@@ -79,7 +80,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		String expectedUserId = randomString();
 		String expectedProtocolVersion = randomString();
 
-		AnalyticsEventsMessage actualAnalyticsEventsMessage =
+		AnalyticsEventsMessageImpl actualAnalyticsEventsMessage =
 			createAnalyticsEventsMessage(
 				expectedAnalyticsKey, expectedUserId, expectedContext,
 				expectedEvents, expectedProtocolVersion);
@@ -92,7 +93,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		Assert.assertEquals(
 			expectedContext, actualAnalyticsEventsMessage.getContext());
 
-		List<AnalyticsEventsMessage.Event> actualEvents =
+		List<AnalyticsEventsMessageImpl.Event> actualEvents =
 			actualAnalyticsEventsMessage.getEvents();
 
 		Assert.assertEquals(
@@ -101,7 +102,7 @@ public class AnalyticsEventsMessageBuilderTest {
 
 		int i = 0;
 
-		for (AnalyticsEventsMessage.Event expectedEvent : expectedEvents) {
+		for (AnalyticsEventsMessageImpl.Event expectedEvent : expectedEvents) {
 			assertEvent(
 				expectedEvent.getApplicationId(), expectedEvent.getEventId(),
 				expectedEvent.getProperties(), actualEvents.get(i++));
@@ -122,7 +123,7 @@ public class AnalyticsEventsMessageBuilderTest {
 	protected void assertEvent(
 		String expectedApplicationId, String expectedEventId,
 		Map<String, String> expectedProperties,
-		AnalyticsEventsMessage.Event actualEvent) {
+		AnalyticsEventsMessageImpl.Event actualEvent) {
 
 		Assert.assertEquals(
 			expectedApplicationId, actualEvent.getApplicationId());
@@ -130,16 +131,16 @@ public class AnalyticsEventsMessageBuilderTest {
 		Assert.assertEquals(expectedProperties, actualEvent.getProperties());
 	}
 
-	protected AnalyticsEventsMessage createAnalyticsEventsMessage(
+	protected AnalyticsEventsMessageImpl createAnalyticsEventsMessage(
 		String analyticsKey, String userId, Map<String, String> context,
-		List<AnalyticsEventsMessage.Event> events, String protocolVersion) {
+		List<AnalyticsEventsMessageImpl.Event> events, String protocolVersion) {
 
-		AnalyticsEventsMessage.Builder messageBuilder =
-			AnalyticsEventsMessage.builder(analyticsKey, userId);
+		AnalyticsEventsMessageImpl.Builder messageBuilder =
+			AnalyticsEventsMessageImpl.builder(analyticsKey, userId);
 
 		messageBuilder.context(context);
 
-		for (AnalyticsEventsMessage.Event event : events) {
+		for (AnalyticsEventsMessageImpl.Event event : events) {
 			messageBuilder.event(event);
 		}
 
@@ -148,11 +149,11 @@ public class AnalyticsEventsMessageBuilderTest {
 		return messageBuilder.build();
 	}
 
-	protected AnalyticsEventsMessage.Event createEvent(
+	protected AnalyticsEventsMessageImpl.Event createEvent(
 		String applicationId, String eventId, Map<String, String> properties) {
 
-		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder(applicationId, eventId);
+		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
+			AnalyticsEventsMessageImpl.Event.builder(applicationId, eventId);
 
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
 			eventBuilder.property(entry.getKey(), entry.getValue());

@@ -15,7 +15,8 @@
 package com.liferay.analytics.data.binding;
 
 import com.liferay.analytics.data.binding.internal.AnalyticsEventsMessageJSONObjectMapper;
-import com.liferay.analytics.java.client.AnalyticsEventsMessage;
+import com.liferay.analytics.java.client.AnalyticsEventsMessageImpl;
+import com.liferay.analytics.model.AnalyticsEventsMessage;
 
 import java.net.URL;
 
@@ -39,8 +40,8 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 	public void testJSONDeserialization() throws Exception {
 		String jsonString = read("analytics_events_message.json");
 
-		AnalyticsEventsMessage analyticsEventsMessage = _jsonObjectMapper.map(
-			jsonString);
+		AnalyticsEventsMessageImpl analyticsEventsMessage =
+			_jsonObjectMapper.map(jsonString);
 
 		Assert.assertEquals(
 			"AnalyticsKey", analyticsEventsMessage.getAnalyticsKey());
@@ -50,7 +51,7 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		Assert.assertEquals("v1", context.get("k1"));
 		Assert.assertEquals("v2", context.get("k2"));
 
-		List<AnalyticsEventsMessage.Event> events =
+		List<AnalyticsEventsMessageImpl.Event> events =
 			analyticsEventsMessage.getEvents();
 
 		Assert.assertEquals(events.toString(), 1, events.size());
@@ -71,14 +72,14 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 
 	@Test
 	public void testJSONSerialization() throws Exception {
-		AnalyticsEventsMessage.Builder messageBuilder =
-			AnalyticsEventsMessage.builder("AnalyticsKey", "UserId");
+		AnalyticsEventsMessageImpl.Builder messageBuilder =
+			AnalyticsEventsMessageImpl.builder("AnalyticsKey", "UserId");
 
 		messageBuilder.contextProperty("k1", "v1");
 		messageBuilder.contextProperty("k2", "v2");
 
-		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
+		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
+			AnalyticsEventsMessageImpl.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("k1", "v1");
 		eventBuilder.property("k2", "v2");
@@ -104,7 +105,7 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		return new String(bytes);
 	}
 
-	private final JSONObjectMapper<AnalyticsEventsMessage> _jsonObjectMapper =
-		new AnalyticsEventsMessageJSONObjectMapper();
+	private final JSONObjectMapper<AnalyticsEventsMessageImpl>
+		_jsonObjectMapper = new AnalyticsEventsMessageJSONObjectMapper();
 
 }
