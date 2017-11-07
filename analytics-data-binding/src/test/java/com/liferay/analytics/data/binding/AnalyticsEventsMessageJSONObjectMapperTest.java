@@ -22,12 +22,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,19 +44,11 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 
 		Assert.assertEquals(
 			"AnalyticsKey", analyticsEventsMessage.getAnalyticsKey());
-		Assert.assertEquals(0, analyticsEventsMessage.getAnonymousUserId());
-		Assert.assertEquals(
-			"ApplicationId", analyticsEventsMessage.getApplicationId());
-		Assert.assertEquals("Channel", analyticsEventsMessage.getChannel());
-		Assert.assertEquals("ClientIP", analyticsEventsMessage.getClientIP());
 
-		AnalyticsEventsMessage.Context context =
-			analyticsEventsMessage.getContext();
+		Map<String, String> context = analyticsEventsMessage.getContext();
 
-		Assert.assertEquals(0, context.getInstanceId());
-		Assert.assertEquals("LanguageId", context.getLanguageId());
-		Assert.assertEquals("Url", context.getURL());
-		Assert.assertEquals(0, context.getUserId());
+		Assert.assertEquals("v1", context.get("k1"));
+		Assert.assertEquals("v2", context.get("k2"));
 
 		List<AnalyticsEventsMessage.Event> events =
 			analyticsEventsMessage.getEvents();
@@ -69,91 +57,35 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 
 		AnalyticsEventsMessage.Event event = events.get(0);
 
-		Assert.assertEquals("AdditionalInfo", event.getAdditionalInfo());
-		Assert.assertEquals("View", event.getEvent());
+		Assert.assertEquals("ApplicationId", event.getApplicationId());
+		Assert.assertEquals("View", event.getEventId());
 
 		Map<String, String> properties = event.getProperties();
 
 		Assert.assertEquals("v1", properties.get("k1"));
 		Assert.assertEquals("v2", properties.get("k2"));
 
-		List<AnalyticsEventsMessage.Referrer> referrers = event.getReferrers();
-
-		Assert.assertEquals(referrers.toString(), 1, referrers.size());
-
-		AnalyticsEventsMessage.Referrer referrer = referrers.get(0);
-
-		Assert.assertEquals(
-			Arrays.asList("1", "2", "3"), referrer.getReferrerEntityIds());
-		Assert.assertEquals("EntityType", referrer.getReferrerEntityType());
-
-		Calendar calendar = new GregorianCalendar();
-
-		calendar.set(2018, 10, 20, 12, 30, 15);
-		calendar.set(Calendar.MILLISECOND, 0);
-
-		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-		Assert.assertEquals(calendar.getTime(), event.getTimestamp());
-
-		Assert.assertEquals(
-			"MessageFormat", analyticsEventsMessage.getMessageFormat());
 		Assert.assertEquals("1.0", analyticsEventsMessage.getProtocolVersion());
-		Assert.assertEquals("UserAgent", analyticsEventsMessage.getUserAgent());
+		Assert.assertEquals("UserId", analyticsEventsMessage.getUserId());
 	}
 
 	@Test
 	public void testJSONSerialization() throws Exception {
 		AnalyticsEventsMessage.Builder messageBuilder =
-			AnalyticsEventsMessage.builder();
+			AnalyticsEventsMessage.builder("AnalyticsKey", "UserId");
 
-		messageBuilder.analyticsKey("AnalyticsKey");
-		messageBuilder.anonymousUserId(0);
-		messageBuilder.applicationId("ApplicationId");
-		messageBuilder.channel("Channel");
-		messageBuilder.clientIP("ClientIP");
-
-		AnalyticsEventsMessage.Context.Builder contextBuilder =
-			AnalyticsEventsMessage.Context.builder();
-
-		contextBuilder.instanceId(0);
-		contextBuilder.languageId("LanguageId");
-		contextBuilder.url("Url");
-		contextBuilder.userId(0);
-
-		messageBuilder.context(contextBuilder.build());
+		messageBuilder.contextProperty("k1", "v1");
+		messageBuilder.contextProperty("k2", "v2");
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder();
-
-		eventBuilder.additionalInfo("AdditionalInfo");
-		eventBuilder.event("View");
+			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("k1", "v1");
 		eventBuilder.property("k2", "v2");
 
-		AnalyticsEventsMessage.Referrer.Builder referrerBuilder =
-			AnalyticsEventsMessage.Referrer.builder();
-
-		referrerBuilder.referrerEntityIds(Arrays.asList("1", "2", "3"));
-		referrerBuilder.referrerEntityType("EntityType");
-
-		eventBuilder.referrer(referrerBuilder.build());
-
-		Calendar calendar = new GregorianCalendar();
-
-		calendar.set(2018, 10, 20, 12, 30, 15);
-		calendar.set(Calendar.MILLISECOND, 0);
-
-		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-		eventBuilder.timestamp(calendar.getTime());
-
 		messageBuilder.event(eventBuilder.build());
 
-		messageBuilder.messageFormat("MessageFormat");
 		messageBuilder.protocolVersion("1.0");
-		messageBuilder.userAgent("UserAgent");
 
 		String expectedJSONString = read("analytics_events_message.json");
 

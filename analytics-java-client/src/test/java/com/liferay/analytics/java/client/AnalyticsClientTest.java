@@ -14,9 +14,6 @@
 
 package com.liferay.analytics.java.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
@@ -34,22 +31,20 @@ public class AnalyticsClientTest {
 	@Test
 	public void testAnalyticsEventCreation() {
 		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
-			AnalyticsEventsMessage.builder("WXYZ", 1234);
+			AnalyticsEventsMessage.builder("ApplicationKey", "UserId");
 
-		Map<String, String> context = new HashMap<>();
-
-		context.put("instanceId", "1234");
-		context.put("languageId", "en_US");
-		context.put("url", "http://www.liferay.com");
-
-		analyticsEventsMessageBuilder.context(context);
+		analyticsEventsMessageBuilder.contextProperty("languageId", "en_US");
+		analyticsEventsMessageBuilder.contextProperty(
+			"url", "http://www.liferay.com");
 
 		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder("AT", "view");
+			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("elementId", "banner1");
 
 		analyticsEventsMessageBuilder.event(eventBuilder.build());
+
+		analyticsEventsMessageBuilder.protocolVersion("1.0");
 
 		Response response = _analyticsClient.sendAnalytics(
 			analyticsEventsMessageBuilder.build());

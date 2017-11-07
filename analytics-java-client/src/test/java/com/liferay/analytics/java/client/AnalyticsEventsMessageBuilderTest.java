@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,8 +54,9 @@ public class AnalyticsEventsMessageBuilderTest {
 
 		// Context
 
-		Map<String, String> expectedContext = createContext(
-			randomLong(), randomString(), randomString(), randomLong());
+		Map<String, String> expectedContext = new HashMap<>();
+
+		expectedContext.put(randomString(), randomString());
 
 		// Events
 
@@ -76,7 +76,7 @@ public class AnalyticsEventsMessageBuilderTest {
 		// Message
 
 		String expectedAnalyticsKey = randomString();
-		long expectedUserId = randomLong();
+		String expectedUserId = randomString();
 		String expectedProtocolVersion = randomString();
 
 		AnalyticsEventsMessage actualAnalyticsEventsMessage =
@@ -115,7 +115,7 @@ public class AnalyticsEventsMessageBuilderTest {
 	@Test(expected = IllegalStateException.class)
 	public void testCreateMessageWithoutEvent() {
 		createAnalyticsEventsMessage(
-			randomString(), randomLong(), new HashMap<>(), new ArrayList<>(),
+			randomString(), randomString(), new HashMap<>(), new ArrayList<>(),
 			randomString());
 	}
 
@@ -131,7 +131,7 @@ public class AnalyticsEventsMessageBuilderTest {
 	}
 
 	protected AnalyticsEventsMessage createAnalyticsEventsMessage(
-		String analyticsKey, long userId, Map<String, String> context,
+		String analyticsKey, String userId, Map<String, String> context,
 		List<AnalyticsEventsMessage.Event> events, String protocolVersion) {
 
 		AnalyticsEventsMessage.Builder messageBuilder =
@@ -148,19 +148,6 @@ public class AnalyticsEventsMessageBuilderTest {
 		return messageBuilder.build();
 	}
 
-	protected Map<String, String> createContext(
-		long instanceId, String languageId, String url, long userId) {
-
-		Map<String, String> context = new HashMap<>();
-
-		context.put("instanceId", String.valueOf(instanceId));
-		context.put("languageId", languageId);
-		context.put("url", url);
-		context.put("userId", String.valueOf(userId));
-
-		return context;
-	}
-
 	protected AnalyticsEventsMessage.Event createEvent(
 		String applicationId, String eventId, Map<String, String> properties) {
 
@@ -172,10 +159,6 @@ public class AnalyticsEventsMessageBuilderTest {
 		}
 
 		return eventBuilder.build();
-	}
-
-	protected long randomLong() {
-		return RandomUtils.nextLong();
 	}
 
 	protected String randomString() {
