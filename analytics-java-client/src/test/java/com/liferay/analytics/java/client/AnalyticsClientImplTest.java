@@ -26,19 +26,19 @@ import org.junit.Test;
  * @author Eduardo Garcia
  */
 @Ignore
-public class AnalyticsClientTest {
+public class AnalyticsClientImplTest {
 
 	@Test
 	public void testAnalyticsEventCreation() {
-		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
-			AnalyticsEventsMessage.builder("ApplicationKey", "UserId");
+		AnalyticsEventsMessageImpl.Builder analyticsEventsMessageBuilder =
+			AnalyticsEventsMessageImpl.builder("ApplicationKey", "UserId");
 
 		analyticsEventsMessageBuilder.contextProperty("languageId", "en_US");
 		analyticsEventsMessageBuilder.contextProperty(
 			"url", "http://www.liferay.com");
 
-		AnalyticsEventsMessage.Event.Builder eventBuilder =
-			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
+		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
+			AnalyticsEventsMessageImpl.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("elementId", "banner1");
 
@@ -52,6 +52,7 @@ public class AnalyticsClientTest {
 		Assert.assertEquals(HttpStatus.SC_OK, response.getStatus());
 	}
 
-	private final AnalyticsClient _analyticsClient = new AnalyticsClient();
+	private final AnalyticsClientImpl _analyticsClient =
+		new AnalyticsClientImpl();
 
 }

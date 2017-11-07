@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.liferay.analytics.data.binding.JSONObjectMapper;
-import com.liferay.analytics.java.client.AnalyticsEventsMessage;
+import com.liferay.analytics.java.client.AnalyticsEventsMessageImpl;
 
 import java.io.IOException;
 
@@ -38,19 +38,21 @@ import org.osgi.service.component.annotations.Component;
 	service = JSONObjectMapper.class
 )
 public class AnalyticsEventsMessageJSONObjectMapper
-	implements JSONObjectMapper<AnalyticsEventsMessage> {
+	implements JSONObjectMapper<AnalyticsEventsMessageImpl> {
 
 	@Override
-	public String map(AnalyticsEventsMessage analyticsEventsMessage)
+	public String map(AnalyticsEventsMessageImpl analyticsEventsMessage)
 		throws IOException {
 
 		return _objectMapper.writeValueAsString(analyticsEventsMessage);
 	}
 
 	@Override
-	public AnalyticsEventsMessage map(String jsonString) throws IOException {
+	public AnalyticsEventsMessageImpl map(String jsonString)
+		throws IOException {
+
 		return _objectMapper.readValue(
-			jsonString, AnalyticsEventsMessage.class);
+			jsonString, AnalyticsEventsMessageImpl.class);
 	}
 
 	private final ObjectMapper _objectMapper = new ObjectMapper();
