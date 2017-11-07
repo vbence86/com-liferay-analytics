@@ -33,7 +33,7 @@ import java.util.Map;
 public final class AnalyticsEventsMessage implements Serializable {
 
 	public static AnalyticsEventsMessage.Builder builder(
-		String analyticsKey, long userId) {
+		String analyticsKey, String userId) {
 
 		return new AnalyticsEventsMessage.Builder(analyticsKey, userId);
 	}
@@ -54,7 +54,7 @@ public final class AnalyticsEventsMessage implements Serializable {
 		return _protocolVersion;
 	}
 
-	public long getUserId() {
+	public String getUserId() {
 		return _userId;
 	}
 
@@ -93,7 +93,7 @@ public final class AnalyticsEventsMessage implements Serializable {
 			return this;
 		}
 
-		protected Builder(String analyticsKey, long userId) {
+		protected Builder(String analyticsKey, String userId) {
 			_analyticsEventsMessage._analyticsKey = analyticsKey;
 			_analyticsEventsMessage._userId = userId;
 		}
@@ -182,6 +182,6 @@ public final class AnalyticsEventsMessage implements Serializable {
 	private String _protocolVersion;
 
 	@JsonProperty("userId")
-	private long _userId;
+	private String _userId;
 
 }
