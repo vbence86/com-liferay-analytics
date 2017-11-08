@@ -39,8 +39,8 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 	public void testJSONDeserialization() throws Exception {
 		String jsonString = read("analytics_events_message.json");
 
-		AnalyticsEventsMessageImpl analyticsEventsMessage =
-			_jsonObjectMapper.map(jsonString);
+		AnalyticsEventsMessage analyticsEventsMessage = _jsonObjectMapper.map(
+			jsonString);
 
 		Assert.assertEquals(
 			"AnalyticsKey", analyticsEventsMessage.getAnalyticsKey());
@@ -50,7 +50,7 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		Assert.assertEquals("v1", context.get("k1"));
 		Assert.assertEquals("v2", context.get("k2"));
 
-		List<AnalyticsEventsMessageImpl.Event> events =
+		List<AnalyticsEventsMessage.Event> events =
 			analyticsEventsMessage.getEvents();
 
 		Assert.assertEquals(events.toString(), 1, events.size());
@@ -71,14 +71,14 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 
 	@Test
 	public void testJSONSerialization() throws Exception {
-		AnalyticsEventsMessageImpl.Builder messageBuilder =
-			AnalyticsEventsMessageImpl.builder("AnalyticsKey", "UserId");
+		AnalyticsEventsMessage.Builder messageBuilder =
+			AnalyticsEventsMessage.builder("AnalyticsKey", "UserId");
 
 		messageBuilder.contextProperty("k1", "v1");
 		messageBuilder.contextProperty("k2", "v2");
 
-		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
-			AnalyticsEventsMessageImpl.Event.builder("ApplicationId", "View");
+		AnalyticsEventsMessage.Event.Builder eventBuilder =
+			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("k1", "v1");
 		eventBuilder.property("k2", "v2");
@@ -104,7 +104,7 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		return new String(bytes);
 	}
 
-	private final JSONObjectMapper<AnalyticsEventsMessageImpl>
-		_jsonObjectMapper = new AnalyticsEventsMessageJSONObjectMapper();
+	private final JSONObjectMapper<AnalyticsEventsMessage> _jsonObjectMapper =
+		new AnalyticsEventsMessageJSONObjectMapper();
 
 }
