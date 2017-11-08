@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.liferay.analytics.data.binding.JSONObjectMapper;
-import com.liferay.analytics.java.client.AnalyticsEventsMessageImpl;
 
 import java.io.IOException;
 

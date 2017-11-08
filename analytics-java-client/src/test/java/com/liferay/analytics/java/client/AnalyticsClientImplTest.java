@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.java.client;
 
+import com.liferay.analytics.model.AnalyticsEventsMessage;
+
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
@@ -30,15 +32,15 @@ public class AnalyticsClientImplTest {
 
 	@Test
 	public void testAnalyticsEventCreation() {
-		AnalyticsEventsMessageImpl.Builder analyticsEventsMessageBuilder =
-			AnalyticsEventsMessageImpl.builder("ApplicationKey", "UserId");
+		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
+			AnalyticsEventsMessage.builder("ApplicationKey", "UserId");
 
 		analyticsEventsMessageBuilder.contextProperty("languageId", "en_US");
 		analyticsEventsMessageBuilder.contextProperty(
 			"url", "http://www.liferay.com");
 
-		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
-			AnalyticsEventsMessageImpl.Event.builder("ApplicationId", "View");
+		AnalyticsEventsMessage.Event.Builder eventBuilder =
+			AnalyticsEventsMessage.Event.builder("ApplicationId", "View");
 
 		eventBuilder.property("elementId", "banner1");
 

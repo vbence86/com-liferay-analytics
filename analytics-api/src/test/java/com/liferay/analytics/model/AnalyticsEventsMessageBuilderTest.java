@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.analytics.java.client;
+package com.liferay.analytics.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +29,7 @@ import org.junit.Test;
  * @author Jeyvison Nascimento
  * @author Marcellus Tavares
  */
-public class AnalyticsEventsMessageImplBuilderTest {
+public class AnalyticsEventsMessageBuilderTest {
 
 	@Test
 	public void testCreateEvent() {
@@ -41,7 +42,7 @@ public class AnalyticsEventsMessageImplBuilderTest {
 		expectedProperties.put(randomString(), randomString());
 		expectedProperties.put(randomString(), randomString());
 
-		AnalyticsEventsMessageImpl.Event actualEvent = createEvent(
+		AnalyticsEventsMessage.Event actualEvent = createEvent(
 			expectedApplicationId, expectedEventId, expectedProperties);
 
 		assertEvent(
@@ -54,14 +55,12 @@ public class AnalyticsEventsMessageImplBuilderTest {
 
 		// Context
 
-		Map<String, String> expectedContext = new HashMap<>();
-
-		expectedContext.put(randomString(), randomString());
+		Map<String, String> expectedContext = createContext(
+			randomLong(), randomString(), randomString(), randomLong());
 
 		// Events
 
-		List<AnalyticsEventsMessageImpl.Event> expectedEvents =
-			new ArrayList<>();
+		List<AnalyticsEventsMessage.Event> expectedEvents = new ArrayList<>();
 
 		String expectedApplicationId = randomString();
 		String expectedEventId = randomString();
@@ -80,7 +79,7 @@ public class AnalyticsEventsMessageImplBuilderTest {
 		String expectedUserId = randomString();
 		String expectedProtocolVersion = randomString();
 
-		AnalyticsEventsMessageImpl actualAnalyticsEventsMessage =
+		AnalyticsEventsMessage actualAnalyticsEventsMessage =
 			createAnalyticsEventsMessage(
 				expectedAnalyticsKey, expectedUserId, expectedContext,
 				expectedEvents, expectedProtocolVersion);
@@ -93,7 +92,7 @@ public class AnalyticsEventsMessageImplBuilderTest {
 		Assert.assertEquals(
 			expectedContext, actualAnalyticsEventsMessage.getContext());
 
-		List<AnalyticsEventsMessageImpl.Event> actualEvents =
+		List<AnalyticsEventsMessage.Event> actualEvents =
 			actualAnalyticsEventsMessage.getEvents();
 
 		Assert.assertEquals(
@@ -102,7 +101,7 @@ public class AnalyticsEventsMessageImplBuilderTest {
 
 		int i = 0;
 
-		for (AnalyticsEventsMessageImpl.Event expectedEvent : expectedEvents) {
+		for (AnalyticsEventsMessage.Event expectedEvent : expectedEvents) {
 			assertEvent(
 				expectedEvent.getApplicationId(), expectedEvent.getEventId(),
 				expectedEvent.getProperties(), actualEvents.get(i++));
@@ -123,7 +122,7 @@ public class AnalyticsEventsMessageImplBuilderTest {
 	protected void assertEvent(
 		String expectedApplicationId, String expectedEventId,
 		Map<String, String> expectedProperties,
-		AnalyticsEventsMessageImpl.Event actualEvent) {
+		AnalyticsEventsMessage.Event actualEvent) {
 
 		Assert.assertEquals(
 			expectedApplicationId, actualEvent.getApplicationId());
@@ -131,16 +130,16 @@ public class AnalyticsEventsMessageImplBuilderTest {
 		Assert.assertEquals(expectedProperties, actualEvent.getProperties());
 	}
 
-	protected AnalyticsEventsMessageImpl createAnalyticsEventsMessage(
+	protected AnalyticsEventsMessage createAnalyticsEventsMessage(
 		String analyticsKey, String userId, Map<String, String> context,
-		List<AnalyticsEventsMessageImpl.Event> events, String protocolVersion) {
+		List<AnalyticsEventsMessage.Event> events, String protocolVersion) {
 
-		AnalyticsEventsMessageImpl.Builder messageBuilder =
-			AnalyticsEventsMessageImpl.builder(analyticsKey, userId);
+		AnalyticsEventsMessage.Builder messageBuilder =
+			AnalyticsEventsMessage.builder(analyticsKey, userId);
 
 		messageBuilder.context(context);
 
-		for (AnalyticsEventsMessageImpl.Event event : events) {
+		for (AnalyticsEventsMessage.Event event : events) {
 			messageBuilder.event(event);
 		}
 
@@ -149,17 +148,34 @@ public class AnalyticsEventsMessageImplBuilderTest {
 		return messageBuilder.build();
 	}
 
-	protected AnalyticsEventsMessageImpl.Event createEvent(
+	protected Map<String, String> createContext(
+		long instanceId, String languageId, String url, long userId) {
+
+		Map<String, String> context = new HashMap<>();
+
+		context.put("instanceId", String.valueOf(instanceId));
+		context.put("languageId", languageId);
+		context.put("url", url);
+		context.put("userId", String.valueOf(userId));
+
+		return context;
+	}
+
+	protected AnalyticsEventsMessage.Event createEvent(
 		String applicationId, String eventId, Map<String, String> properties) {
 
-		AnalyticsEventsMessageImpl.Event.Builder eventBuilder =
-			AnalyticsEventsMessageImpl.Event.builder(applicationId, eventId);
+		AnalyticsEventsMessage.Event.Builder eventBuilder =
+			AnalyticsEventsMessage.Event.builder(applicationId, eventId);
 
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
 			eventBuilder.property(entry.getKey(), entry.getValue());
 		}
 
 		return eventBuilder.build();
+	}
+
+	protected long randomLong() {
+		return RandomUtils.nextLong();
 	}
 
 	protected String randomString() {

@@ -15,7 +15,6 @@
 package com.liferay.analytics.data.binding;
 
 import com.liferay.analytics.data.binding.internal.AnalyticsEventsMessageJSONObjectMapper;
-import com.liferay.analytics.java.client.AnalyticsEventsMessageImpl;
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 
 import java.net.URL;
