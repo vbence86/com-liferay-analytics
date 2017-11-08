@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.analytics.data.binding;
+package com.liferay.analytics.data.binding.internal;
 
-import com.liferay.analytics.data.binding.internal.AnalyticsEventsMessageJSONObjectMapper;
+import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 
 import java.net.URL;
