@@ -40,7 +40,8 @@ public class AnalyticsClientImpl implements AnalyticsClient {
 
 	private static final String _ANALYTICS_GATEWAY_URL = System.getProperty(
 		"analytics.gateway.url",
-		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events");
+		"https://ec-dev.liferay.com:8095/api/analyticsgateway" +
+			"/send-analytics-events");
 
 	private final Client _client = ClientBuilder.newClient();
 
