@@ -1,8 +1,8 @@
+const STORAGE_KEY = 'lcs_client_batch';
 const should = chai.should;
 const expect = chai.expect;
 const assert = chai.assert;
 const Analytics = window.Analytics;
-const STORAGE_KEY = 'lcs_client_batch';
 const fetchMock =  window.fetchMock;
 
 function sendDummyEvents(eventsNumber = 5) {
@@ -45,6 +45,31 @@ describe('Analytics API', () => {
 		Analytics.create();
 		Analytics.send.should.be.a('function');
 	});
+
+	it('Analytics instance must expose registerPlugin function', () => {
+		Analytics.create();
+		Analytics.registerPlugin.should.be.a('function');
+	});
+
+	it('Analytics.registerPlugin must process the given plugin and execute its initialisation', function() {
+
+		Analytics.create();
+
+		const plugin = analytics => {
+			analytics.should.be.equal(Analytics);
+		};
+		const spy = sinon.spy(plugin);
+
+		Analytics.registerPlugin(spy);
+		assert.isTrue(spy.calledOnce);
+
+	});	
+
+	it('Analytics instance must expose registerMiddleware function', () => {
+		Analytics.create();
+		Analytics.registerMiddleware.should.be.a('function');
+	});
+
 
 	it('Analytics.send() must add the given event to the event queue', () => {
 		const eventId = 'eventId';
@@ -146,10 +171,31 @@ describe('Analytics API', () => {
 				expect(fetchCalled).to.equal(1);
 
 				Analytics.flush.restore();
+				fetchMock.restore();
 				resolve();
 
 			}, AUTO_FLUSH_FREQUENCY * 3);
 		});
+	});
+
+	it('Analytics.registerMiddleware must process the given middleware', function() {
+
+		Analytics.create();
+		const middleware = (req, analytics) => {
+			analytics.should.be.equal(Analytics);
+			req.should.be.a('object');
+			return req;
+		};
+		const spy = sinon.spy(middleware);
+
+		Analytics.registerMiddleware(spy);
+		sendDummyEvents();
+		return Analytics
+			.flush()
+			.then(() => {
+				assert.isTrue(spy.calledOnce);
+			});
+
 	});
 
 });
