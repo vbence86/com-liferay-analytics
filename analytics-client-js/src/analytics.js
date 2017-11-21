@@ -26,8 +26,10 @@ const storage = new Storage(new LocalStorageMechanism());
  * @return {object}
  */
 function serialize(eventId, applicationId, properties) {
+	const eventDate = new Date().toISOString();
 	return {
 		eventId,
+		eventDate,
 		applicationId,
 		properties,
 	};
