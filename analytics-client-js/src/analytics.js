@@ -6,17 +6,19 @@ import {
 } from 'metal-storage';
 import LCSClient from './LCSClient';
 
-// activate Middlewares
-import './middlewares/default';
-import './middlewares/meta';
+// Default Middlewares
+import './middlewares/defaults';
+
+// Default Plugins
+import defaultPlugins from './plugins/defaults';
+const plugins = defaultPlugins;
 
 const ENV = window || global;
-
 const DEFAULT_FLUSH_TIME = 2000;
 const REQUEST_TIMEOUT = 5000;
 const STORAGE_KEY = 'lcs_client_batch';
 
-// creates LocalStorage wrapper
+// Creates LocalStorage wrapper
 const storage = new Storage(new LocalStorageMechanism());
 
 /**
@@ -48,6 +50,17 @@ function handleError(err) {
 }
 
 /**
+ * Transform the given parameter to a function
+ * @param {mixed} input
+ */
+function functionize(input) {
+	if ('function' !== typeof input) {
+		 return () => {};
+	}
+	return input;
+}
+
+/**
  * Analytics class that is desined to collect events that are captured
  * for later processing. It persists the events in the LocalStorage using the
  * metal-storage implementation and flushes it to the defined endpoint at
@@ -65,8 +78,11 @@ class Analytics {
 		this.events = storage.get(STORAGE_KEY) || [];
 		this.flushIsInProgress = false;
 
-		// start automatic flush loop
+		// Start automatic flush loop
 		this.timer = schedule.every(`${flushTime}ms`).do(() => this.flush());
+
+		// Executes default Plugins
+		plugins.forEach(plugin => plugin(this));
 	}
 
 	/**
@@ -121,6 +137,28 @@ class Analytics {
 				// regardless the outcome the flag needs invalidation
 				.then(() => (this.flushIsInProgress = false))
 		);
+	}
+
+	/**
+	 * Registers the given plugin and executes its initialistion logic
+	 * @param {object} plugin
+	 */
+	registerPlugin(plugin) {
+		plugin = functionize(plugin);
+		plugins.push(plugin);
+		plugin(this);
+	}
+
+	/**
+	 * Registers the given middleware. This middleware will be later on called
+	 * with the request object and this Analytics instance
+	 * @param {object} middleware
+	 * @example 
+	 * Analytics.registerMiddleware((request, analytics) => ... )
+	 */
+	registerMiddleware(middleware) {
+		middleware = functionize(middleware);
+		LCSClient.use(middleware);		
 	}
 
 	/**
