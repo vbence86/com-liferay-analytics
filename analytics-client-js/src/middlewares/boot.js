@@ -1,12 +1,10 @@
-import LCSClient from '../LCSClient';
-
 /**
- * Default middleware that generates the basic message to LCS
+ * Bootstraps the basic message to LCS
  * @param {object} req - request object to alter
  * @param {object} analytics - Analytics instance to extract behaviour informations from it
  * @return {object} the updated request object
  */
-function defaultMiddleware(req, analytics) {
+function bootstrap(req, analytics) {
 	const events = analytics.getEvents();
 	const config = analytics.getConfig();
 	const requestBody = {
@@ -23,4 +21,4 @@ function defaultMiddleware(req, analytics) {
 }
 
 // registers the middleware
-LCSClient.use(defaultMiddleware);
+LCSClient.use(bootstrap);
