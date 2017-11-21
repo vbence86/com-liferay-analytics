@@ -1,3 +1,5 @@
+import LCSClient from '../LCSClient';
+
 /**
  * Bootstraps the basic message to LCS
  * @param {object} req - request object to alter

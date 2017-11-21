@@ -119,10 +119,10 @@ class Analytics {
 	flush() {
 		// do not attempt to trigger multiple flush actions until the previous one
 		// is terminated
-		if (this.flushIsInProgress) return;
+		if (this.flushIsInProgress) return Promise.resolve();
 
 		// no flush when there is nothing to push
-		if (this.events.length === 0) return;
+		if (this.events.length === 0) return Promise.resolve();
 
 		// flag to avoid overlapping requests
 		this.flushIsInProgress = true;
