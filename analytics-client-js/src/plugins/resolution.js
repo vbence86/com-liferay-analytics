@@ -19,7 +19,7 @@ function getHeight() {
  * @return {number}
  */
 function getDevicePixelRatio() {
-	return widnow.devicePixelRatio || 1;
+	return window.devicePixelRatio || 1;
 }
 
 /**
@@ -39,9 +39,10 @@ function extendContextWithResolutionData(req, analytics) {
 	req.context = {
 		screenWidth: getWidth(),
 		screenHeight: getHeight(),
-		devicePixelRation: getDevicePixelRation(),
+		devicePixelRatio: getDevicePixelRatio(),
 		...req.context
 	}
+	return req;
 }
 
 export { resolution };
