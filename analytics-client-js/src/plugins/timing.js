@@ -14,8 +14,6 @@ function unload(analytics) {
 		viewDuration
 	};
 	analytics.send('unload', 'timing', props);
-	// Flush is mandantory in this case
-	analytics.flush();
 }
 
 /**
