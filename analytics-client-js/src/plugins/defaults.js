@@ -1,12 +1,15 @@
 import resolution from './resolution';
 import timing from './timing';
+import scrolling from './scrolling';
 
-export { 
+export {
 	resolution,
-	timing
+	timing,
+	scrolling,
 };
 
 export default [
 	resolution,
-	timing
+	timing,
+	scrolling
 ];
