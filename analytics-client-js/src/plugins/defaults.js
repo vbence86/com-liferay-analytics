@@ -1,6 +1,12 @@
 import resolution from './resolution';
+import timing from './timing';
 
-export { resolution };
+export { 
+	resolution,
+	timing
+};
+
 export default [
-	resolution
+	resolution,
+	timing
 ];
