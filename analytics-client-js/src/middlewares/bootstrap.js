@@ -1,5 +1,3 @@
-import LCSClient from '../LCSClient';
-
 /**
  * Bootstraps the basic message to LCS
  * @param {object} req - request object to alter
@@ -22,5 +20,5 @@ function bootstrap(req, analytics) {
 	};
 }
 
-// registers the middleware
-LCSClient.use(bootstrap);
+export { bootstrap };
+export default bootstrap;

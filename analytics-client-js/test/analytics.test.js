@@ -79,7 +79,7 @@ describe('Analytics API', () => {
 		Analytics.send(eventId, applicationId, properties);
 		const events = Analytics.getEvents();
 		events.should.have.lengthOf(1);
-		events.should.deep.include({
+		events[0].should.deep.include({
 			eventId,
 			applicationId,
 			properties,

@@ -6,9 +6,6 @@ import {
 } from 'metal-storage';
 import LCSClient from './LCSClient';
 
-// Default Middlewares
-import './middlewares/defaults';
-
 // Default Plugins
 import defaultPlugins from './plugins/defaults';
 const plugins = defaultPlugins;

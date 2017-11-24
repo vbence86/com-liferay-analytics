@@ -56,5 +56,5 @@ function openGraph(req) {
 	return req;
 }
 
-// registers the middleware
-LCSClient.use(openGraph);
+export { openGraph };
+export default openGraph;

@@ -1,5 +1,3 @@
-import LCSClient from '../LCSClient';
-
 /**
  * Generates a local helper function to fetch information from DOM elements
  * @param {string} query - query string
@@ -37,5 +35,5 @@ function context(req) {
 	return req;
 }
 
-// registers the middleware
-LCSClient.use(context);
+export { context };
+export default context;

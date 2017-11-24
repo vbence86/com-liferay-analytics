@@ -1,9 +1,12 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+// Default Middlewares
+import defaultMiddlewares from './middlewares/defaults';
+const middlewares = defaultMiddlewares;
+
 const LCS_ENDPOINT =
 	'https://ec-dev.liferay.com:8095/api/analyticsgateway/send-analytics-events';
-const middlewares = [];
 
 /**
  * Returns a resolved or rejected promise as per the response status
