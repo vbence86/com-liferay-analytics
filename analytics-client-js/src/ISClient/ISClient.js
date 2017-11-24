@@ -1,27 +1,34 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
-const LCS_ENDPOINT =
-	'https://ec-dev.liferay.com:8095/api/analyticsgateway/send-analytics-events';
+// Default Middlewares
+import defaultMiddlewares from './middlewares/defaults';
+const middlewares = defaultMiddlewares;
+
+const IS_ENDPOINT =
+	'http://pulpo-engine-contacts-pre.eu-west-1.elasticbeanstalk.com/my-project-id/identity';
 
 /**
  * Returns a resolved or rejected promise as per the response status
  * @param {object} The Analytics instance from which the data is extracted
  * @return {object} Promise object representing the result of the operation
  */
-function send(analytics) {
-	const request = getLCSRequest(analytics);
-	const url = analytics.getEndpointURL() || LCS_ENDPOINT;
-	return fetch(LCS_ENDPOINT, request).then(validate);
+function getUserId(analytics) {
+	const request = getISRequest(analytics);
+	const url = analytics.getIdentiyServiceUrl() || IS_ENDPOINT;
+	return fetch(IS_ENDPOINT, request)
+		.then(validate)
+		.then(jsonify)
+		.then(resp => resp.userId);
 }
 
 /**
- * Returns a Request object with all data from the analytics instance
+ * Returns a Request object for the Identity Service
  * includin the batched event objects
  * @param {object} The Analytics instance from which the data is extracted
  * @return {object} Request
  */
-function getLCSRequest(analytics) {
+function getISRequest(analytics) {
 	const headers = new Headers();
 	const body = JSON.stringify(getRequestBody(analytics));
 
@@ -39,17 +46,16 @@ function getLCSRequest(analytics) {
 
 /**
  * Returns the formatted version of the analytics data that complies to the
- * predefined request specification of the LCS endpoint
+ * predefined request specification of the IS endpoint
  * @param {object} The Analytics instance from which the data is extracted
  * @return {object} object literal
  */
 function getRequestBody(analytics) {
-	const userId = analytics.getUserId();
-	const events = analytics.getEvents();
-	return {
-		userId,
-		events
-	}
+	const requestBody = {};
+	return middlewares.reduce(
+		(request, middleware) => middleware(request, analytics),
+		requestBody
+	);
 }
 
 /**
@@ -67,11 +73,21 @@ function validate(resp) {
 }
 
 /**
+ * Parses the response in order to create a Javascript object from it
+ * @param  {Response} resp native Response object coming from the Fetch API
+ * @return {Promise} Promise object representing the result of the operation]
+ */
+function jsonify(resp){
+  if (!resp || !resp.json) throw 'Invalid Response object!';
+  return resp.json();
+}
+
+/**
  * Adds middleware function to provide ability to transform the request
  * that is sent to LCS endpoint
  * @param {function} middleware function to alter request
  * @example
- * LCSClient.use((req, analytics) => {
+ * ISClient.use((req, analytics) => {
  *   req.firstEvent = analytics.getEvents()[0];
  *   req.myMetaInfo = 'myMetaInfo';
  *   return req;
@@ -82,10 +98,10 @@ function use(middleware) {
 }
 
 // expose the API of the Client
-const LCSClient = {
+const ISClient = {
 	use,
 	send,
 };
 
-export {LCSClient};
-export default LCSClient;
+export {ISClient};
+export default ISClient;

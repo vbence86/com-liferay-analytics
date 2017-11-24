@@ -46,12 +46,12 @@ describe('Analytics API', () => {
 		Analytics.send.should.be.a('function');
 	});
 
-	it('Analytics instance must expose registerPlugin function', () => {
+	it('Analytics instance must expose plug function', () => {
 		Analytics.create();
-		Analytics.registerPlugin.should.be.a('function');
+		Analytics.plug.should.be.a('function');
 	});
 
-	it('Analytics.registerPlugin must process the given plugin and execute its initialisation', function() {
+	it('Analytics.plug must process the given plugin and execute its initialisation', function() {
 
 		Analytics.create();
 
@@ -60,14 +60,14 @@ describe('Analytics API', () => {
 		};
 		const spy = sinon.spy(plugin);
 
-		Analytics.registerPlugin(spy);
+		Analytics.plug(spy);
 		assert.isTrue(spy.calledOnce);
 
 	});	
 
-	it('Analytics instance must expose registerMiddleware function', () => {
+	it('Analytics instance must expose use function', () => {
 		Analytics.create();
-		Analytics.registerMiddleware.should.be.a('function');
+		Analytics.use.should.be.a('function');
 	});
 
 
@@ -178,7 +178,7 @@ describe('Analytics API', () => {
 		});
 	});
 
-	it('Analytics.registerMiddleware must process the given middleware', function() {
+	it('Analytics.use must process the given middleware', function() {
 
 		Analytics.create();
 		const middleware = (req, analytics) => {
@@ -188,7 +188,7 @@ describe('Analytics API', () => {
 		};
 		const spy = sinon.spy(middleware);
 
-		Analytics.registerMiddleware(spy);
+		Analytics.use(spy);
 		sendDummyEvents();
 		return Analytics
 			.flush()

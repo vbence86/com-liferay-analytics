@@ -4,6 +4,7 @@ import {
 	StorageMechanism,
 	LocalStorageMechanism,
 } from 'metal-storage';
+import ISClient from './ISClient/ISClient';
 import LCSClient from './LCSClient/LCSClient';
 
 // Default Plugins
@@ -14,6 +15,7 @@ const ENV = window || global;
 const DEFAULT_FLUSH_TIME = 2000;
 const REQUEST_TIMEOUT = 5000;
 const STORAGE_KEY = 'lcs_client_batch';
+const USER_ID_KEY = 'is_user_id';
 
 // Creates LocalStorage wrapper
 const storage = new Storage(new LocalStorageMechanism());
@@ -75,6 +77,7 @@ class Analytics {
 
 		this.config = config || {};
 		this.events = storage.get(STORAGE_KEY) || [];
+		this.userId = storage.get(USER_ID_KEY);
 		this.flushIsInProgress = false;
 
 		// Start automatic flush loop
@@ -116,19 +119,30 @@ class Analytics {
 	 * @returns {object} Promise
 	 */
 	flush() {
-		// do not attempt to trigger multiple flush actions until the previous one
+		let manufactureLine; 
+		// Do not attempt to trigger multiple flush actions until the previous one
 		// is terminated
 		if (this.flushIsInProgress) return Promise.resolve();
 
-		// no flush when there is nothing to push
+		// No flush when there is nothing to push
 		if (this.events.length === 0) return Promise.resolve();
 
-		// flag to avoid overlapping requests
+		// Flag to avoid overlapping requests
 		this.flushIsInProgress = true;
+
+		// Composes the flow of execution async actions
+		if (this.userId) {
+			manufactureLine = LCSClient.send(this);
+		} else {
+			manufactureLine = ISClient
+				.getUserId(this)
+				.then(userId => this.userId = userId)
+				.then(LCSClient.send.bind(null, this))
+		}
 
 		// race condition against finishing off before the timeout is triggered
 		return (
-			Promise.race([LCSClient.send(this), timeout(REQUEST_TIMEOUT)])
+			Promise.race([manufactureLine, timeout(REQUEST_TIMEOUT)])
 				// resets our storage if sending the events went down well
 				.then(() => this.reset())
 				// any type of error must be handled
@@ -142,7 +156,7 @@ class Analytics {
 	 * Registers the given plugin and executes its initialistion logic
 	 * @param {object} plugin
 	 */
-	registerPlugin(plugin) {
+	plug(plugin) {
 		plugin = functionize(plugin);
 		plugins.push(plugin);
 		plugin(this);
@@ -155,9 +169,9 @@ class Analytics {
 	 * @example 
 	 * Analytics.registerMiddleware((request, analytics) => ... )
 	 */
-	registerMiddleware(middleware) {
+	use(middleware) {
 		middleware = functionize(middleware);
-		LCSClient.use(middleware);		
+		ISClient.use(middleware);		
 	}
 
 	/**
@@ -175,6 +189,10 @@ class Analytics {
 
 	getEvents() {
 		return this.events;
+	}
+
+	getUserId() {
+		return this.userId;
 	}
 
 	/**

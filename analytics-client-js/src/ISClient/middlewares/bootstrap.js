@@ -1,19 +1,22 @@
 /**
- * Bootstraps the basic message to LCS
+ * Bootstraps the basic message to IS
  * @param {object} req - request object to alter
  * @param {object} analytics - Analytics instance to extract behaviour informations from it
  * @return {object} the updated request object
  */
 function bootstrap(req, analytics) {
-	const events = analytics.getEvents();
 	const config = analytics.getConfig();
+
+	// Bootstrap the default Request Body
 	const requestBody = {
 		analyticsKey: config.analyticsKey,
-		context: {},
 		protocolVersion: '1.0',
-		userId: config.userId,
-		events,
 	};
+
+	if (config.email) {
+		requestBody.email = email;
+	}
+
 	return {
 		...requestBody,
 		...req,

@@ -1,5 +1,3 @@
-import LCSClient from '../LCSClient';
-
 const ATTR_KEY = 'property';
 const ATTR_VALUE = 'content';
 
@@ -49,9 +47,9 @@ function getOpenGraphMetaData() {
  * @return {object} the updated request object
  */
 function openGraph(req) {
-	req.context = {
+	req = {
 		...getOpenGraphMetaData(),
-		...req.context,
+		...req,
 	};
 	return req;
 }

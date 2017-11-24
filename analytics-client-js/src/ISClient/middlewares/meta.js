@@ -23,14 +23,14 @@ const getTitle = getQuery('title', 'innerHTML');
  * @return {object} the updated request object
  */
 function context(req) {
-	req.context = {
+	req = {
 		description: getDescription(),
 		keywords: getKeywords(),
 		languageId: navigator.language,
 		title: getTitle(),
 		url: location.href,
 		userAgent: navigator.userAgent,
-		...req.context,
+		...req,
 	};
 	return req;
 }
